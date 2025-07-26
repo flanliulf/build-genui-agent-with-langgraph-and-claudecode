@@ -10,7 +10,8 @@
       "Bash(make test:*)",
       "Bash(uv:*)",
       "Bash(make:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git merge:*)"
     ],
     "deny": []
   }
