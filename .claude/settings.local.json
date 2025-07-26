@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(uv sync:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(make test:*)",
+      "Bash(uv:*)",
+      "Bash(make:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

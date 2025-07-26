@@ -1,15 +1,16 @@
 [project]
-name = "agent"
+name = "build-genui-agent-with-langgraph"
 version = "0.0.1"
-description = "Starter template for making a new agent LangGraph."
+description = "a simple generative ui agent built with LangGraph."
 authors = [
-    { name = "William Fu-Hinthorn", email = "13333726+hinthornw@users.noreply.github.com" },
+    { name = "Fancy Liu", email = "flanliulf@gmail.com" },
 ]
 readme = "README.md"
 license = { text = "MIT" }
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 dependencies = [
     "langgraph>=0.2.6",
+    "langchain-core>=0.3.0",
     "python-dotenv>=1.0.1",
 ]
 
