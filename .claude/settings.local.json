@@ -11,7 +11,10 @@
       "Bash(uv:*)",
       "Bash(make:*)",
       "Bash(git add:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": []
   }
