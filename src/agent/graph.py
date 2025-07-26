@@ -8,7 +8,8 @@ from __future__ import annotations
 import random
 import re
 import uuid
-from typing import Annotated, Any, Dict, Sequence, TypedDict
+from typing import Annotated, Any, Dict, Sequence
+from typing_extensions import TypedDict
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 from langchain_core.runnables import RunnableConfig
