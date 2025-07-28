@@ -11,7 +11,7 @@ This is a **Weather Agent with Generative UI** project built on LangGraph, demon
 - **Entry Point**: `src/agent/graph.py` - Main weather agent logic with message parsing
 - **UI Component**: `src/agent/ui.tsx` - React weather card with Tailwind CSS
 - **Graph Structure**: Single-node StateGraph with weather_node processing
-- **State Management**: Uses `State` with messages and UI component data
+- **State Management**: Uses `AgentState` with messages and UI component data
 - **Message Processing**: Extracts city information from natural language queries
 
 ### Key Components
@@ -19,7 +19,7 @@ This is a **Weather Agent with Generative UI** project built on LangGraph, demon
 1. **Weather Agent** (`src/agent/graph.py`):
    - `extract_city_from_message()`: Natural language city extraction with regex patterns
    - `weather_node()`: Core processing function with UI generation
-   - `State` class: Messages and UI data flow structure
+   - `AgentState` class: Messages and UI data flow structure
    - `WEATHER_DATA`: Static weather dataset for 5 Chinese cities
 
 2. **UI Components**:
@@ -60,7 +60,7 @@ uv run langgraph dev
 uv run python examples/weather_demo.py
 ```
 
-### Testing (All 35 tests pass)
+### Testing (All 34 tests pass)
 ```bash
 # Makefile with intelligent uv/python selection
 make test                    # Run all unit tests
@@ -111,14 +111,17 @@ src/agent/
 └── __init__.py      # Module initialization
 
 tests/
-├── unit_tests/      # 35 unit tests (100% pass rate)
-│   ├── test_message_parsing.py     # Natural language tests
-│   ├── test_weather_node.py        # Agent functionality tests
-│   ├── test_ui_data.py             # UI component data tests
-│   └── test_configuration.py       # Configuration tests
+├── unit_tests/      # 34 unit tests (100% pass rate)
+│   ├── test_message_parsing.py     # Natural language tests (10 tests)
+│   ├── test_weather_node.py        # Agent functionality tests (8 tests)
+│   ├── test_ui_data.py             # UI component data tests (12 tests)
+│   └── test_configuration.py       # Configuration tests (4 tests)
 └── integration_tests/              # End-to-end tests
 
 docs/
+├── development/     # Development documentation
+│   ├── ARCHITECTURE.md  # Technical architecture
+│   └── README.md        # Development guide
 ├── features/        # Feature documentation
 ├── testing/         # Testing guides
 └── README.md        # Documentation index
@@ -149,11 +152,11 @@ PYTHON_CMD := $(shell command -v uv >/dev/null 2>&1 && echo "uv run" || echo "py
 
 ## Testing Strategy
 
-### Test Coverage (35/35 passing)
-- **Message Parsing**: 10 tests covering all query patterns
-- **Weather Node**: 8 tests for async functionality and error handling
-- **UI Data**: 12 tests for component data structure validation
-- **Configuration**: 5 tests for graph structure and setup
+### Test Coverage (34/34 passing)
+- **Message Parsing**: 10 tests covering all query patterns and natural language expressions
+- **Weather Node**: 8 tests for async functionality, city extraction, and error handling
+- **UI Data**: 12 tests for component data structure validation and windSpeed field consistency
+- **Configuration**: 4 tests for AgentState structure and graph compilation
 
 ### Test Environment
 - **Framework**: pytest with anyio for async support
@@ -168,7 +171,8 @@ PYTHON_CMD := $(shell command -v uv >/dev/null 2>&1 && echo "uv run" || echo "py
 4. **Add New Nodes**: Extend graph with additional processing nodes
 
 ## Error Handling
-- **Unsupported Cities**: Graceful fallback to random weather data
-- **Missing Context**: UI message push handles missing LangGraph context
-- **Network Issues**: Static data ensures reliable operation
-- **Test Environment**: Proper async context management for unit tests
+- **Unsupported Cities**: Graceful fallback to default weather data (Beijing)
+- **Missing Context**: UI message push handles missing LangGraph context with try-catch
+- **Network Issues**: Static data ensures reliable operation without external APIs
+- **Test Environment**: Proper async context management for unit tests with RuntimeError handling
+- **Field Consistency**: Unified windSpeed field name across frontend and backend

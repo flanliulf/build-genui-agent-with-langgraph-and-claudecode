@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 import pytest
 from langchain_core.runnables import RunnableConfig
 from langchain_core.messages import AIMessage, HumanMessage
-from agent.graph import weather_node, State, WEATHER_DATA, extract_city_from_message
+from agent.graph import weather_node, AgentState, WEATHER_DATA, extract_city_from_message
 
 
 class TestWeatherNodeSimple:
@@ -16,12 +16,12 @@ class TestWeatherNodeSimple:
     @pytest.fixture
     def empty_state(self):
         """创建空状态"""
-        return State(messages=[], ui=[])
+        return AgentState(messages=[], ui=[])
 
     @pytest.fixture
     def state_with_city_message(self):
         """创建包含城市消息的状态"""
-        return State(
+        return AgentState(
             messages=[HumanMessage(content="北京的天气怎么样？")],
             ui=[]
         )
@@ -29,7 +29,7 @@ class TestWeatherNodeSimple:
     @pytest.fixture
     def state_with_no_city_message(self):
         """创建不包含城市的消息状态"""
-        return State(
+        return AgentState(
             messages=[HumanMessage(content="天气怎么样？")],
             ui=[]
         )
@@ -48,7 +48,7 @@ class TestWeatherNodeSimple:
             assert "temperature" in weather
             assert "condition" in weather
             assert "humidity" in weather
-            assert "wind" in weather
+            assert "windSpeed" in weather
             assert "description" in weather
             
             # 验证字段类型
@@ -56,13 +56,13 @@ class TestWeatherNodeSimple:
             assert isinstance(weather["temperature"], str)
             assert isinstance(weather["condition"], str)
             assert isinstance(weather["humidity"], str)
-            assert isinstance(weather["wind"], str)
+            assert isinstance(weather["windSpeed"], str)
             assert isinstance(weather["description"], str)
 
     @pytest.mark.anyio
-    async def test_weather_node_basic_functionality(self, empty_state, default_config):
+    async def test_weather_node_basic_functionality(self, empty_state):
         """测试基本功能"""
-        result = await weather_node(empty_state, default_config)
+        result = await weather_node(empty_state)
 
         # 验证结果
         assert "messages" in result
@@ -70,16 +70,19 @@ class TestWeatherNodeSimple:
 
         message = result["messages"][0]
         assert isinstance(message, AIMessage)
-        assert "🌤️" in message.content
+        # 验证消息包含天气图标（☀️、⛅、☁️、🌧️之一）
+        weather_icons = ["☀️", "⛅", "☁️", "🌧️"]
+        has_weather_icon = any(icon in message.content for icon in weather_icons)
+        assert has_weather_icon, f"消息中缺少天气图标: {message.content}"
         
         # 验证消息 ID 存在
         assert message.id is not None
         assert isinstance(message.id, str)
 
     @pytest.mark.anyio
-    async def test_weather_node_with_city_message(self, state_with_city_message, default_config):
+    async def test_weather_node_with_city_message(self, state_with_city_message):
         """测试包含城市的消息"""
-        result = await weather_node(state_with_city_message, default_config)
+        result = await weather_node(state_with_city_message)
 
         # 验证结果
         assert "messages" in result
@@ -91,9 +94,9 @@ class TestWeatherNodeSimple:
         assert beijing_weather["description"] in message.content
 
     @pytest.mark.anyio
-    async def test_weather_node_no_city_message(self, state_with_no_city_message, default_config):
+    async def test_weather_node_no_city_message(self, state_with_no_city_message):
         """测试不包含城市的消息"""
-        result = await weather_node(state_with_no_city_message, default_config)
+        result = await weather_node(state_with_no_city_message)
 
         # 验证结果存在
         assert "messages" in result
@@ -101,7 +104,10 @@ class TestWeatherNodeSimple:
         
         message = result["messages"][0]
         assert isinstance(message, AIMessage)
-        assert "🌤️" in message.content
+        # 验证消息包含天气图标（☀️、⛅、☁️、🌧️之一）
+        weather_icons = ["☀️", "⛅", "☁️", "🌧️"]
+        has_weather_icon = any(icon in message.content for icon in weather_icons)
+        assert has_weather_icon, f"消息中缺少天气图标: {message.content}"
 
     def test_extract_city_from_message_basic(self):
         """测试城市提取基本功能"""
@@ -123,13 +129,12 @@ class TestWeatherNodeSimple:
         assert extract_city_from_message("你好") is None
         assert extract_city_from_message("火星天气") is None
 
-    def test_configuration_structure(self):
-        """测试配置结构"""
-        from agent.graph import Configuration
+    def test_graph_structure(self):
+        """测试图结构"""
+        from agent.graph import graph
         
-        # Configuration 应该是一个空的 TypedDict
-        config = {}  # Configuration 当前为空
-        assert isinstance(config, dict)
+        # 图应该已编译
+        assert graph is not None
 
     def test_weather_cities_coverage(self):
         """测试天气城市覆盖"""

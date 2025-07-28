@@ -16,7 +16,7 @@ from typing import Dict, Any
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from langchain_core.messages import HumanMessage
-from agent.graph import graph, State, WEATHER_DATA
+from agent.graph import graph, AgentState, WEATHER_DATA
 
 
 def render_weather_card(ui_data: Dict[str, Any]) -> str:
@@ -29,7 +29,7 @@ def render_weather_card(ui_data: Dict[str, Any]) -> str:
     temperature = props.get("temperature", "N/A")
     condition = props.get("condition", "N/A")
     humidity = props.get("humidity", "N/A")
-    wind = props.get("wind", "N/A")
+    wind = props.get("windSpeed", "N/A")
     description = props.get("description", "N/A")
     
     return f"""
@@ -70,7 +70,7 @@ async def demo_basic_usage():
     print("-" * 40)
     
     user_message = HumanMessage(content="天气怎么样？")
-    state = State(messages=[user_message], ui=[])
+    state = AgentState(messages=[user_message], ui=[])
     config = {"configurable": {}}
     
     result = await graph.ainvoke(state, config)
@@ -94,7 +94,7 @@ async def demo_specified_city():
     
     for user_input in test_inputs:
         user_message = HumanMessage(content=user_input)
-        state = State(messages=[user_message], ui=[])
+        state = AgentState(messages=[user_message], ui=[])
         config = {"configurable": {}}
         
         result = await graph.ainvoke(state, config)
@@ -113,7 +113,7 @@ async def demo_random_selection():
     
     for i in range(3):
         user_message = HumanMessage(content="天气怎么样？")
-        state = State(messages=[user_message], ui=[])
+        state = AgentState(messages=[user_message], ui=[])
         config = {"configurable": {}}
         
         result = await graph.ainvoke(state, config)
@@ -132,7 +132,7 @@ async def demo_error_handling():
     print("📌 当用户询问不支持的城市时，系统会提供友好的回退")
     
     user_message = HumanMessage(content="东京的天气怎么样？")
-    state = State(messages=[user_message], ui=[])
+    state = AgentState(messages=[user_message], ui=[])
     config = {"configurable": {}}
     
     result = await graph.ainvoke(state, config)
@@ -152,7 +152,7 @@ async def demo_concurrent_calls():
     
     async def single_call(call_id: int, user_input: str):
         user_message = HumanMessage(content=user_input)
-        state = State(messages=[user_message], ui=[])
+        state = AgentState(messages=[user_message], ui=[])
         config = {"configurable": {}}
         
         result = await graph.ainvoke(state, config)
@@ -179,7 +179,7 @@ async def demo_data_structure():
     print("📌 展示完整的响应数据结构")
     
     user_message = HumanMessage(content="杭州天气怎么样？")
-    state = State(messages=[user_message], ui=[])
+    state = AgentState(messages=[user_message], ui=[])
     config = {"configurable": {}}
     
     result = await graph.ainvoke(state, config)

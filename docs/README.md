@@ -1,54 +1,44 @@
-# 项目文档目录
+# 📚 项目文档导航
 
-欢迎查看天气 Agent Generative UI 项目的详细文档。
+> **提示**: 如果您是第一次接触本项目，建议先阅读 [项目主 README](../README.md) 了解基础信息和快速开始指南。
 
-## 📂 文档结构
+## 📂 文档分类
 
-### 功能文档 (features/)
-- **[Generative UI 功能指南](features/generative-ui-guide.md)** - 详细的 UI 组件开发和使用指南
-- **[消息解析功能](features/message-parsing.md)** - 自然语言处理实现详解和更新说明
+### 🏗️ [开发文档](development/)
+面向开发者的技术文档，包含架构设计和实现细节。
 
-### 测试文档 (testing/)
-- **[测试结构文档](testing/test-structure.md)** - 测试套件结构、重组过程和使用说明
+- **[技术架构文档](development/ARCHITECTURE.md)** - 系统架构、算法设计、性能优化
+- **[开发文档导航](development/README.md)** - 开发文档索引和维护指南
 
-## 🚀 快速导航
+### ✨ [功能文档](features/)  
+面向用户的功能说明和使用指南。
 
-### 🔰 新手入门
-1. 先阅读 [项目主 README](../README.md) 了解基础信息
-2. 查看 [Generative UI 功能指南](features/generative-ui-guide.md) 学习核心功能
-3. 运行 `uv run python examples/weather_demo.py` 体验功能
+- **[Generative UI 功能指南](features/generative-ui-guide.md)** - UI 组件开发和使用
+- **[消息解析功能](features/message-parsing.md)** - 自然语言处理实现
 
-### 🛠️ 开发者指南
-1. 阅读 [消息解析功能](features/message-parsing.md) 了解实现细节
-2. 查看 [测试结构文档](testing/test-structure.md) 了解测试架构
-3. 参考测试用例进行功能扩展
+### 🧪 [测试文档](testing/)
+测试策略、结构和执行指南。
 
-### 🧪 测试相关
-1. 查看 [测试结构文档](testing/test-structure.md) 了解测试组织
-2. 运行 `make test` 执行单元测试（推荐）或 `uv run pytest tests/unit_tests/ -v`
-3. 参考测试文件学习最佳实践
+- **[测试结构文档](testing/test-structure.md)** - 测试套件组织和使用
 
-## 📋 文档更新历史
+## 🎯 按需求查找
 
-- **2024-01** - 创建项目文档结构
-- **2024-01** - 添加 Generative UI 功能指南
-- **2024-01** - 完成消息解析功能文档
-- **2024-01** - 整理测试结构文档
+| 我想要... | 推荐文档 | 预计时间 |
+|-----------|----------|----------|
+| 快速体验项目 | [项目主 README](../README.md) → 快速开始 | 5分钟 |
+| 理解技术架构 | [技术架构文档](development/ARCHITECTURE.md) | 15分钟 |
+| 学习具体功能 | [功能文档](features/) | 10分钟 |
+| 参与项目开发 | [开发文档](development/) → [测试文档](testing/) | 30分钟 |
+| 扩展项目功能 | 架构文档 → 功能文档 → 测试文档 | 45分钟 |
 
-## 💡 文档贡献
+## 💡 文档说明
 
-如果您发现文档中的问题或有改进建议：
+- **格式**: 所有文档使用 Markdown 格式，支持代码高亮
+- **维护**: 文档与代码同步更新，确保信息准确性  
+- **贡献**: 欢迎通过 Issue 和 PR 改进文档内容
 
-1. **错误报告**: 通过 Issue 报告文档错误
-2. **内容改进**: 提交 PR 改进文档内容
-3. **新增文档**: 为新功能添加相应文档
-
-## 🔗 相关链接
+## 🔗 外部资源
 
 - [LangGraph 官方文档](https://langchain-ai.github.io/langgraph/)
 - [React UI SDK 文档](https://langchain-ai.github.io/langgraph/reference/sdk/js_ts_sdk_ref/)
 - [Tailwind CSS 文档](https://tailwindcss.com/docs)
-
----
-
-📍 **提示**: 所有文档都使用 Markdown 格式编写，支持代码高亮和交互式示例。

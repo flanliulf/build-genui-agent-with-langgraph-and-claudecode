@@ -7,21 +7,21 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 import pytest
 from unittest.mock import patch, MagicMock
 
-from agent.graph import WEATHER_DATA, WeatherData
+from agent.graph import WEATHER_DATA, WeatherOutput
 
 
 class TestUIDataGeneration:
     """UI 数据生成单元测试"""
 
-    def test_weather_data_type_definition(self):
-        """测试 WeatherData TypedDict 结构"""
+    def test_weather_output_type_definition(self):
+        """测试 WeatherOutput TypedDict 结构"""
         # 创建测试数据
-        weather_data = WeatherData(
+        weather_data = WeatherOutput(
             city="测试城市",
             temperature="25°C",
             condition="晴天",
             humidity="50%",
-            wind="5km/h",
+            windSpeed="5km/h",
             description="测试描述"
         )
         
@@ -29,14 +29,14 @@ class TestUIDataGeneration:
         assert weather_data["temperature"] == "25°C"
         assert weather_data["condition"] == "晴天"
         assert weather_data["humidity"] == "50%"
-        assert weather_data["wind"] == "5km/h"
+        assert weather_data["windSpeed"] == "5km/h"
         assert weather_data["description"] == "测试描述"
 
     def test_all_weather_data_completeness(self):
         """测试所有天气数据的完整性"""
         for i, weather in enumerate(WEATHER_DATA):
             # 验证所有必需字段都存在且不为空
-            required_fields = ["city", "temperature", "condition", "humidity", "wind", "description"]
+            required_fields = ["city", "temperature", "condition", "humidity", "windSpeed", "description"]
             
             for field in required_fields:
                 assert field in weather, f"天气数据 {i} 缺少字段 '{field}'"
@@ -53,7 +53,7 @@ class TestUIDataGeneration:
             assert weather["humidity"].endswith("%"), f"湿度格式错误: {weather['humidity']}"
             
             # 验证风速格式 (应该以km/h结尾)
-            assert weather["wind"].endswith("km/h"), f"风速格式错误: {weather['wind']}"
+            assert weather["windSpeed"].endswith("km/h"), f"风速格式错误: {weather['windSpeed']}"
             
             # 验证城市名称不为空且长度合理
             assert len(weather["city"]) >= 2, f"城市名称过短: {weather['city']}"
@@ -106,14 +106,14 @@ class TestUIDataGeneration:
     def test_wind_speed_validation(self):
         """测试风速合理性"""
         for weather in WEATHER_DATA:
-            wind_str = weather["wind"].replace("km/h", "")
+            wind_str = weather["windSpeed"].replace("km/h", "")
             
             try:
                 wind_value = int(wind_str)
                 # 验证风速在合理范围内 (0-100 km/h)
                 assert 0 <= wind_value <= 100, f"风速超出合理范围: {wind_value}km/h"
             except ValueError:
-                pytest.fail(f"无法解析风速值: {weather['wind']}")
+                pytest.fail(f"无法解析风速值: {weather['windSpeed']}")
 
     def test_description_content_validation(self):
         """测试描述内容合理性"""
@@ -148,7 +148,7 @@ class TestUIDataGeneration:
         
         # 验证 props 包含所有必需的天气字段
         props = expected_ui_message["props"]
-        required_fields = ["city", "temperature", "condition", "humidity", "wind", "description"]
+        required_fields = ["city", "temperature", "condition", "humidity", "windSpeed", "description"]
         for field in required_fields:
             assert field in props
 
@@ -167,7 +167,7 @@ class TestUIDataGeneration:
     def test_ui_component_props_compatibility(self):
         """测试 UI 组件属性兼容性"""
         # 验证天气数据包含 UI 组件所需的所有属性
-        required_ui_props = ["city", "temperature", "condition", "humidity", "wind", "description"]
+        required_ui_props = ["city", "temperature", "condition", "humidity", "windSpeed", "description"]
         
         for weather in WEATHER_DATA:
             for prop in required_ui_props:

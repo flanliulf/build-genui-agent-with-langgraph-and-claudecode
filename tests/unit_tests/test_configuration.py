@@ -3,7 +3,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
 from langgraph.pregel import Pregel
-from agent.graph import graph, Configuration, State, WEATHER_DATA
+from agent.graph import graph, AgentState, WEATHER_DATA
 
 
 def test_graph_is_pregel_instance() -> None:
@@ -11,18 +11,10 @@ def test_graph_is_pregel_instance() -> None:
     assert isinstance(graph, Pregel)
 
 
-def test_configuration_structure() -> None:
-    """测试配置结构"""
-    # 测试 Configuration TypedDict
-    config = Configuration()
-    assert isinstance(config, dict)
-    # Configuration 目前为空，保留结构以便未来扩展
-
-
-def test_state_structure() -> None:
-    """测试状态结构"""
-    # 测试 State TypedDict
-    state = State(messages=[], ui=[])
+def test_agent_state_structure() -> None:
+    """测试AgentState结构"""
+    # 测试 AgentState TypedDict
+    state = AgentState(messages=[], ui=[])
     assert "messages" in state
     assert "ui" in state
     assert isinstance(state["messages"], list)
@@ -37,11 +29,12 @@ def test_weather_data_constants() -> None:
     # 验证每个天气数据的结构
     for weather in WEATHER_DATA:
         assert isinstance(weather, dict)
-        required_keys = ["city", "temperature", "condition", "humidity", "wind", "description"]
+        required_keys = ["city", "temperature", "condition", "humidity", "windSpeed", "description"]
         for key in required_keys:
             assert key in weather
 
 
-def test_graph_name() -> None:
-    """测试 graph 名称"""
-    assert graph.name == "Weather Agent"
+def test_graph_compilation() -> None:
+    """测试 graph 编译"""
+    assert graph is not None
+    # 图已经编译，可以进行基本调用

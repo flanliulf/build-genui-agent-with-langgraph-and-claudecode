@@ -1,70 +1,62 @@
 import React, { useState, useEffect } from 'react';
 
-// Mock weather data for different cities
-const mockWeatherData = {
-  '北京': {
-    temperature: '22°C',
-    condition: '晴天',
-    humidity: '45%',
-    windSpeed: '3km/h',
-    icon: '☀️',
-    gradient: 'linear-gradient(135deg, #fdcb6e 0%, #e17055 100%)',
-    description: '今天北京天气晴朗，温度适宜，适合外出活动。'
-  },
-  '上海': {
-    temperature: '18°C', 
-    condition: '多云',
-    humidity: '68%',
-    windSpeed: '5km/h',
-    icon: '⛅',
-    gradient: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)',
-    description: '上海今天多云转阴，温度稍凉，建议增添衣物。'
-  },
-  '深圳': {
-    temperature: '26°C',
-    condition: '小雨',
-    humidity: '78%',
-    windSpeed: '7km/h', 
-    icon: '🌧️',
-    gradient: 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)',
-    description: '深圳今天有小雨，湿度较高，出门记得带伞。'
-  },
-  '广州': {
-    temperature: '24°C',
-    condition: '阴天',
-    humidity: '72%',
-    windSpeed: '4km/h',
-    icon: '☁️',
-    gradient: 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)',
-    description: '广州今天阴天，温度舒适，适合室内活动。'
-  },
-  '杭州': {
-    temperature: '20°C',
-    condition: '晴天',
-    humidity: '55%',
-    windSpeed: '6km/h',
-    icon: '☀️',
-    gradient: 'linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%)',
-    description: '杭州今天晴空万里，温度宜人，是游览的好天气。'
-  }
+// Weather component props interface - matches backend WeatherOutput
+interface WeatherProps {
+  city: string;
+  temperature: string;
+  condition: string;
+  humidity: string;
+  windSpeed: string;
+  description: string;
+}
+
+// Visual mapping functions - keep presentation logic in frontend
+const getWeatherIcon = (condition: string): string => {
+  const conditionMap: Record<string, string> = {
+    '晴天': '☀️',
+    '多云': '⛅',
+    '阴天': '☁️',
+    '小雨': '🌧️',
+    '大雨': '🌧️',
+    '雪': '❄️',
+    '雾': '🌫️'
+  };
+  return conditionMap[condition] || '🌤️';
 };
 
-const WeatherComponent = (props: { city: string }) => {
+const getBackgroundGradient = (condition: string): string => {
+  const gradientMap: Record<string, string> = {
+    '晴天': 'linear-gradient(135deg, #fdcb6e 0%, #e17055 100%)',
+    '多云': 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)',
+    '阴天': 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)',
+    '小雨': 'linear-gradient(135deg, #636e72 0%, #2d3436 100%)',
+    '大雨': 'linear-gradient(135deg, #2d3436 0%, #000000 100%)',
+    '雪': 'linear-gradient(135deg, #74b9ff 0%, #ffffff 100%)',
+    '雾': 'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)'
+  };
+  return gradientMap[condition] || 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)';
+};
+
+const WeatherComponent = (props: WeatherProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [weatherData, setWeatherData] = useState(mockWeatherData['北京']);
 
   useEffect(() => {
-    console.log('🎯 WeatherComponent 正在渲染!', { city: props.city });
+    console.log('🎯 WeatherComponent 正在渲染!', props);
     
     // Trigger animation on mount
     setIsVisible(true);
-    
-    // Get weather data for the specified city
-    const cityData = mockWeatherData[props.city as keyof typeof mockWeatherData];
-    if (cityData) {
-      setWeatherData(cityData);
-    }
-  }, [props.city]);
+  }, [props]);
+
+  // Use props data directly instead of mock data
+  const weatherData = {
+    temperature: props.temperature,
+    condition: props.condition,
+    humidity: props.humidity,
+    windSpeed: props.windSpeed,
+    description: props.description,
+    icon: getWeatherIcon(props.condition),
+    gradient: getBackgroundGradient(props.condition)
+  };
 
   return (
     <div className="weather-container">
