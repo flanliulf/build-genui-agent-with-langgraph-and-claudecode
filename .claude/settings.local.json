@@ -25,7 +25,12 @@
       "Bash(node:*)",
       "Bash(npm:*)",
       "Bash(grep:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)",
+      "Bash(curl:*)",
+      "Bash(ping:*)",
+      "Bash(git config:*)"
     ],
     "deny": []
   }
