@@ -30,7 +30,8 @@
       "Bash(git push:*)",
       "Bash(curl:*)",
       "Bash(ping:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": []
   }
