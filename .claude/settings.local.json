@@ -31,7 +31,9 @@
       "Bash(curl:*)",
       "Bash(ping:*)",
       "Bash(git config:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(git log:*)",
+      "Bash(git for-each-ref:*)"
     ],
     "deny": []
   }
